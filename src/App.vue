@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, shallowRef, computed, watch, nextTick } from 'vue';
+  import { ref, shallowRef, computed, watch, nextTick, onMounted } from 'vue';
   import Chart from 'chart.js/auto';
 
   const weights = ref([])
@@ -15,7 +15,13 @@
       weight: weightInput.value,
       date: new Date().getTime()
     })
+    localStorage.setItem('weights', JSON.stringify(weights.value))
   }
+
+  onMounted(() => {
+    weights.value = JSON.parse(localStorage.getItem('weights')) || []
+    console.log(weights.value)
+  })
 
   watch(weights, newWeights => {
     const ws = [...newWeights]
